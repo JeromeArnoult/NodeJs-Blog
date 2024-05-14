@@ -1,4 +1,5 @@
 const Post = require('../models/post');
+const adminLayout = '../views/layouts/admin';
 
 exports.addPost = async (req, res) => {
     try {

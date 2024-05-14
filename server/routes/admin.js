@@ -5,28 +5,9 @@ const User = require('../models/user');
 const postsCtrl = require('../controller/postsCtrl')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const authController = require('../controller/authController');
 const adminLayout = '../views/layouts/admin';
 const jwtSecret = process.env.JWT_SECRET;
-
-/**
- * GET /
- * Check login
- */
-
-const authMiddleware = (req, res, next ) => {
-    const token = req.cookies.token;
-
-    if(!token) {
-        return res.status(401).json({ message: 'Unauthorized'});
-    }
-    try {
-        const decoded = jwt.verify(token, jwtSecret);
-        req.userId = decoded.userId;
-        next()    
-    } catch(error) {
-        res.status(401).json({ message: 'Unauthorized'});
-    }
-}
 /**
  * GET /
  * Admin - Login Page
@@ -78,7 +59,7 @@ router.post('/admin', async(req, res) => {
  * GET /
  * Admin - Dashboard
  */
-router.get('/dashboard', authMiddleware, async (req, res) => {
+router.get('/dashboard', authController.authMiddleware, async (req, res) => {
 
     try {
         const locals = {
@@ -101,29 +82,29 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
  * POST /
  * Admin - Create new post
  */
-router.post('/add-post', authMiddleware, postsCtrl.addPost);
+router.post('/add-post', authController.authMiddleware, postsCtrl.addPost);
 /**
  * GET /
  * Admin - Read post
  */
-router.get('/add-post', authMiddleware, postsCtrl.renderAddPostForm);
+router.get('/add-post', authController.authMiddleware, postsCtrl.renderAddPostForm);
 /**
  * GET /
  * Admin - Edit post
  * affiche le formulaire d'édition d'un post
  */
-router.get('/edit-post/:id', authMiddleware, postsCtrl.editPostId);
+router.get('/edit-post/:id', authController.authMiddleware, postsCtrl.editPostId);
 /**
  * PUT /
  * Admin - Edit post
  *  traite la soumission du formulaire d'édition
  */
-router.put('/edit-post/:id', authMiddleware, postsCtrl.editPostId);
+router.put('/edit-post/:id', authController.authMiddleware, postsCtrl.editPostId);
 /**
  * DELETE /
  * Admin - DELETE post
  */
-router.delete('/delete-post/:id', authMiddleware, postsCtrl.deletePost);
+router.delete('/delete-post/:id', authController.authMiddleware, postsCtrl.deletePost);
 /**
  * POST /
  * Admin - Register 
