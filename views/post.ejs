@@ -1,4 +1,9 @@
-<h1><%= data.title  %></h1>
+<h1><%= data.title %></h1>
 <article class="article">
+    <% if (data.images && data.images.length > 0) { %>
+        <img src="/uploads/<%= encodeURIComponent(data.images[0].filename) %>" alt="<%= data.title %>" />
+    <% } %>
     <%= data.body %>
 </article>
+
+

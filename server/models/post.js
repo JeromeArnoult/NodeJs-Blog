@@ -10,6 +10,16 @@ const PostSchema = new Schema({
         type: String,
         required: true
     },
+    images: [{
+        filename: String,
+        filepath: String,
+        mimetype: String,
+        size: Number,
+        uploadedAt: {
+            type: Date,
+            default: Date.now
+        }
+    }],
     createdAt: {
         type: Date,
         default: Date.now
