@@ -36,8 +36,6 @@ app.use(session({
 
 app.use(express.static('public'));
 
-// Ajoutez cette ligne pour servir les fichiers du répertoire 'uploads'
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 /* Template Engine */
 app.use(expressLayout);
