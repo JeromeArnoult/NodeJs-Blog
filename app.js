@@ -8,9 +8,6 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const path = require('path');
 const multer = require('multer');
-const { Dropbox } = require('dropbox');
-const multerDropbox = require('multer-dropbox');
-
 const connectDB = require('./server/config/db');
 const { isActiveRoute } = require('./server/helpers/routeHelpers');
 
@@ -25,15 +22,9 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(methodOverride('_method'));
 
-/* Configure Dropbox */
-const dbx = new Dropbox({ accessToken: process.env.DROPBOX_ACCESS_TOKEN });
-
-const upload = multer({
-    storage: multerDropbox({
-        dropbox: dbx,
-        path: '/uploads/'
-    })
-});
+/* Configure Multer for local storage */
+const storage = multer.memoryStorage();  // Use memory storage to avoid EROFS error
+const upload = multer({ storage });
 
 app.use(session({
     secret: 'keyboard cat',
